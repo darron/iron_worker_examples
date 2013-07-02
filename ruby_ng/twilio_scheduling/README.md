@@ -13,7 +13,7 @@ We'll cover both of these. But first, our sms worker, take a look `sms.rb`. This
 ## Getting Started
 
 - first, you must have an [Iron.io](http://www.iron.io) account
-- and have your iron.json file setup. See: http://dev.iron.io/articles/configuration/
+- and have your iron.json file setup. See: http://dev.iron.io/mq/reference/configuration/
 - copy `config_example.yml` to `config.yml` and fill it in, with your Twilio information. In the 'to' field,
 enter your own mobile phone number so you can receive the text.
 
