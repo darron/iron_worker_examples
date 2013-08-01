@@ -5,7 +5,7 @@ This is the code that goes with this article: http://dev.iron.io/solutions/image
 
 To run this example:
 
-1. [Setup your Iron.io credentials](http://dev.iron.io/articles/configuration/) if you haven't done so already.
+1. [Setup your Iron.io credentials](http://dev.iron.io/worker/reference/configuration/) if you haven't done so already.
 1. Install required gems:
   1. `sudo gem install subexec mini_magick aws`
 1. From this directory, run: `iron_worker upload image_processor`
