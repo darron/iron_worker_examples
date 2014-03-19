@@ -3,7 +3,7 @@ require_once "phar://../iron_worker.phar";
 
 $worker = new IronWorker();
 
-$config = parse_ini_file('../config.ini', true);
+$config = parse_ini_file('config.ini', true);
 
 $task_id = $worker->postTask('Mongo', array(
     'db' => $config['mongo']
