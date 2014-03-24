@@ -3,7 +3,7 @@ Example which describes how to send mail via Iron.io Worker in Laravel PHP Frame
 -------------
 
 <p align="center">
-<img align="center" src="https://github.com/iron-io/iron_worker_php/master/images/laravel_iron_worker.png" alt="laravel+iron.io">
+<img align="center" src="../../../raw/master/images/laravel_iron_worker.png" alt="laravel+iron.io">
 </p>
 
 ## Getting Started
