@@ -13,8 +13,8 @@ class SentrySeeder extends Seeder {
         Sentry::getUserProvider()->create(array(
             'email'       => 'admin@admin.com',
             'password'    => "admin",
-            'first_name'  => 'free',
-            'last_name'   => 'man',
+            'first_name'  => 'John',
+            'last_name'   => 'Doe',
             'activated'   => 1,
         ));
 

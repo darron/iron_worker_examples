@@ -5,7 +5,6 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-        "iron-io/iron_mq": "dev-master",
         "iron-io/iron_worker": "dev-master",
         "cartalyst/sentry": "2.1.*",
         "dflydev/markdown": "v1.0.2",
