@@ -1,4 +1,4 @@
-Example which describes how to send mail via Iron.io Worker in Laravel PHP Framework
+Example that describes how to send mail via Iron.io Worker in Laravel PHP Framework
 -------------
 -------------
 
@@ -10,7 +10,7 @@ Example which describes how to send mail via Iron.io Worker in Laravel PHP Frame
 
 ### Set credentials
 
-1. Set database credentials in `app/config/database.php` (for app) and in `worker/app/config/database.php` (for worker). The database must be accessible from outside.
+1. Set database credentials in `app/config/database.php` (for app) and in `worker/app/config/database.php` (for worker). The database must be accessible from the outside.
 2. Set Iron.io credentials in `app/config/iron.php`
 3. Set smtp settings in `worker/app/config/mail.php`
 
@@ -21,11 +21,11 @@ Example which describes how to send mail via Iron.io Worker in Laravel PHP Frame
 
 ### How to use
 
-In the user list (URL: `/admin/users`) you can select one or more users (via checkboxes) you want to send mail than click button send mail it's will make ajax request to app.
-In that time app check if the worker exist in iron.io. If it doesn't exit it will be uploaded and run for mail selected users,
-if it exist it will be run for mail selected users.
+In the user list (URL: `/admin/users`) you can select one or more users (via checkboxes) that you want to send mail and then clicking the "send mail" button  will make an ajax request to the app.
 
-You can change letter template in `worker/app/views/mail/template.blade.php`
+The app will then check if the worker exists at Iron.io. If it doesn't, it will upload before sending to the selected users.
+
+You can change the letter template in `worker/app/views/mail/template.blade.php`
 
 -------------
 ## About Laravel
