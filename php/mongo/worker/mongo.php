@@ -13,6 +13,11 @@ $db = $mongo->selectDB($cfg->db);
 # Pick a collection
 $collection = $db->items;
 
+$list = $db->listCollections();
+foreach ($list as $collection) {
+    echo $collection;
+}
+
 # Insert item to collection
 $item = array( "title" => "Title", "text" => "Hello, php" );
 $collection->insert($item);

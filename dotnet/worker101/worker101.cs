@@ -27,8 +27,8 @@ public class HelloWorld
 		}
     System.Console.WriteLine("Query = {0}", query);
 
-    //making twitter search query
-    string response = PerformRequest("GET","http://search.twitter.com/search.json?q="+query);
+    //making wikipedia search query
+    string response = PerformRequest("GET","http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&rvsection=0&format=json&titles="+query);
     //writing response to file
     File.WriteAllText(@"someText.txt", response);
     //reading response from file

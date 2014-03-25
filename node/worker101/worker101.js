@@ -5,7 +5,7 @@ var http = require("http"),
     events = require("events"),
     sys = require("util");
 
-var Twitter = (function () {
+var Wiki = (function () {
     var eventEmitter = new events.EventEmitter();
 
     return {
@@ -13,24 +13,24 @@ var Twitter = (function () {
     };
 })();
 
-function get_tweets(query) {
+function get_wiki(query) {
     // Send a search request to Twitter
     var request = http.request({
-        host:"search.twitter.com",
+        host:"en.wikipedia.org",
         port:80,
         method:"GET",
-        path:"/search.json?since_id=" + Twitter.latestTweet + "result_type=recent&rpp=5&q=" + query
+        path:"/w/api.php?action=query&prop=revisions&rvprop=content&rvsection=0&format=json&titles=" + query
     })
         .on("response", function (response) {
             var body = "";
             response.on("data", function (data) {
                 body += data;
                 try {
-                    var tweets = JSON.parse(body);
-                    if (tweets.results.length > 0) {
-                        Twitter.EventEmitter.emit("tweets", tweets);
+                    var res = JSON.parse(body);
+                    if (res.query.pages) {
+                        Wiki.EventEmitter.emit("result", res);
                     }
-                    Twitter.EventEmitter.removeAllListeners("tweets");
+                    Wiki.EventEmitter.removeAllListeners("result");
                 }
                 catch (ex) {
                     console.log("waiting more data...");
@@ -39,17 +39,17 @@ function get_tweets(query) {
         });
     request.end();
 }
-//putting tweets to log
-Twitter.EventEmitter.once("tweets", function (tweets) {
-    console.log(JSON.stringify(tweets));
+//putting wiki result to log
+Wiki.EventEmitter.once("result", function (results) {
+    console.log(JSON.stringify(results));
 });
 
 //writing to file
-Twitter.EventEmitter.once("tweets", function (tweets) {
+Wiki.EventEmitter.once("result", function (results) {
     var fs = require('fs');
     console.log('Writing to file');
-    fs.open('tweets.txt', 'a', 777, function (e, id) {
-        fs.write(id, JSON.stringify(tweets), null, 'utf8', function () {
+    fs.open('wiki_res.txt', 'a', 777, function (e, id) {
+        fs.write(id, JSON.stringify(results), null, 'utf8', function () {
             fs.close(id, function () {
                 console.log('file closed');
             });
@@ -63,6 +63,6 @@ require('./lib/payload_parser').parse_payload(process.argv, function (payload) {
     if (payload && payload['query']) {
         query = payload['query'];
     }
-    get_tweets(query);
+    get_wiki(query);
     console.log('Query:' + query);
 });

@@ -19,7 +19,7 @@ public class Worker101 {
         System.out.println("Running worker");
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(System.in));
-        String urlstr = "http://search.twitter.com/search.json?q=";
+        String urlstr = "http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&rvsection=0&format=json&titles=";
         StringBuffer buff = new StringBuffer();
 
         urlstr += parse_payload(args);
@@ -36,14 +36,10 @@ public class Worker101 {
         br.close();
 
         JSONObject js = new JSONObject(buff.toString());
-        JSONArray tweets = js.getJSONArray("results");
-        JSONObject tweet;
-        for(int i=0;i<tweets.length();i++) {
-            tweet = tweets.getJSONObject(i);
-            System.out.println((i+1)+") "+tweet.getString("from_user")+" at "+tweet.getString("created_at"));
-            System.out.println(tweets.getJSONObject(i).getString("text")+"\n");
-        }
-        writeFile("output.txt",tweets.getJSONObject(0).getString("text"));
+        JSONObject wikiRes = js.getJSONObject("query").getJSONObject("pages");
+
+        System.out.println(wikiRes.toString()+"\n");
+        writeFile("output.txt", wikiRes.toString());
     }
 
         private static String parse_payload(String[] args) {
