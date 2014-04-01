@@ -1,4 +1,4 @@
 runtime 'binary'
 file 'hello.go'
-exec 'worker101.sh'
+exec 'hello.sh'
 build 'go build hello.go'

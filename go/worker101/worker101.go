@@ -1,110 +1,77 @@
 package main
 
+import "github.com/kurrik/oauth1a"
+import "github.com/kurrik/twittergo"
+
 import (
-	"encoding/json"
-	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
+	"time"
 )
 
-var d = flag.String("d", "", "Some param")
-var e = flag.String("e", "", "Some param")
-var task_id = flag.String("id", "", "Task id")
-var payload = flag.String("payload", "", "payload")
 
-const queryURI = "http://search.twitter.com/search.%s?q=%s&rpp=%d"
-
-// JSON Data Structure
-
-type Payload struct {
-	Query string `json:"query"`
-}
-
-type JTweets struct {
-	Results     []Result `json:"results"`
-	MaxId       float32 `json:"max_id"`
-	SinceId     int     `json:"since_id"`
-	RefreshURL  string  `json:"refresh_url"`
-	NextPage    string  `json:"next_page"`
-	Page        int     `json:"page"`
-	CompletedIn float32 `json:"completed_in"`
-	Query       string  `json:"query"`
-}
-
-type Result struct {
-	ProfileImageUrl string `json:"profile_image_url"`
-	CreatedAt       string `json:"created_at"`
-	FromUser        string `json:"from_user"`
-	Text            string `json:"text"`
-	Id              float32 `json:"id"`
-	FromUserId      int    `json:"from_user_id"`
-	ISOLanguageCode string `json:"iso_language_code"`
-	Source          string `json:"source"`
-}
-
-func ts(s string, n int) []string {
-	r, err := http.Get(fmt.Sprintf(queryURI, "json", url.QueryEscape(s), n))
+func LoadCredentials() (client *twittergo.Client, err error) {
+	credentials, err := ioutil.ReadFile("CREDENTIALS")
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return nil
+		return
 	}
-	defer r.Body.Close()
-	fmt.Fprintf(os.Stderr, "Searching for '%s' (%d results in %s)\n", s, n, "json")
-	if r.StatusCode != http.StatusOK {
-		fmt.Fprintf(os.Stderr, "Twitter is unable to search for %s as %s (%s)\n", s, "json", r.Status)
-		return nil
+	lines := strings.Split(string(credentials), "\n")
+	config := &oauth1a.ClientConfig{
+		ConsumerKey:    lines[0],
+		ConsumerSecret: lines[1],
 	}
-	return readjson(r.Body)
-}
-
-func readjson(r io.Reader) []string {
-	b, err := ioutil.ReadAll(r)
-	fmt.Println(string(b))
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return nil
-	}
-	var twitter JTweets
-	err = json.Unmarshal(b, &twitter)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Unable to parse the JSON feed:", err)
-		return nil
-	}
-
-	twits := make([]string, len(twitter.Results))
-	for i, result := range twitter.Results {
-		fmt.Println(result.Text)
-		twits[i] = result.Text
-	}
-	return twits
+	user := oauth1a.NewAuthorizedConfig(lines[2], lines[3])
+	client = twittergo.NewClient(config, user)
+	return
 }
 
 func main() {
-	flag.Parse()
-	file, err := ioutil.ReadFile(*payload)
+	var (
+		err     error
+		client  *twittergo.Client
+		req     *http.Request
+		resp    *twittergo.APIResponse
+		results *twittergo.SearchResults
+	)
+	client, err = LoadCredentials()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "File error:", err)
+		fmt.Printf("Could not parse CREDENTIALS file: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Println("Payload:", string(file))
-	var p Payload
-	err = json.Unmarshal(file, &p)
-	query := p.Query
+	query := url.Values{}
+	query.Set("q", "twitterapi")
+	url := fmt.Sprintf("/1.1/search/tweets.json?%v", query.Encode())
+	req, err = http.NewRequest("GET", url, nil)
 	if err != nil {
-		query = "iron.io"
+		fmt.Printf("Could not parse request: %v\n", err)
+		os.Exit(1)
 	}
-	twits := ts(query, 20)
-
-	if len(twits) > 0 {
-		fmt.Println("Writing to file:", twits[0])
-
-		err := ioutil.WriteFile("sample_file.txt", []byte(twits[0]), 0644)
-		if err != nil {
-			fmt.Println("Error Writing to file:", err)
-		}
+	resp, err = client.SendRequest(req)
+	if err != nil {
+		fmt.Printf("Could not send request: %v\n", err)
+		os.Exit(1)
+	}
+	results = &twittergo.SearchResults{}
+	err = resp.Parse(results)
+	if err != nil {
+		fmt.Printf("Problem parsing response: %v\n", err)
+		os.Exit(1)
+	}
+	for i, tweet := range results.Statuses() {
+		user := tweet.User()
+		fmt.Printf("%v.) %v\n", i+1, tweet.Text())
+		fmt.Printf("From %v (@%v) ", user.Name(), user.ScreenName())
+		fmt.Printf("at %v\n\n", tweet.CreatedAt().Format(time.RFC1123))
+	}
+	if resp.HasRateLimit() {
+		fmt.Printf("Rate limit:           %v\n", resp.RateLimit())
+		fmt.Printf("Rate limit remaining: %v\n", resp.RateLimitRemaining())
+		fmt.Printf("Rate limit reset:     %v\n", resp.RateLimitReset())
+	} else {
+		fmt.Printf("Could not parse rate limit from response.\n")
 	}
 }
