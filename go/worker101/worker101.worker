@@ -1,4 +1,4 @@
 runtime 'binary'
 exec 'worker101.sh'
-file 'worker101.go'
-build 'go build worker101.go'
+file 'worker101'
+file 'CREDENTIALS'

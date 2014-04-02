@@ -1,6 +1,6 @@
 import argparse
 import json
-from lib import twitter
+from lib import wiki
 query = 'iron.io'
 
 parser = argparse.ArgumentParser(
@@ -24,12 +24,13 @@ if args.payload is not None:
 #Workers code
 if query is not None:
     print("Search by query")
-    results = twitter.search(query)
+    results = wiki.search(query)
     print(results)
     myInput = open('myfile.txt','w+')
     print("now writing to file")
-    myInput.write(results[0]['text'])
-    myInput.close()
+    json.dump(results, myInput)
+    #myInput.write(results.dump)
+    #myInput.close()
     myInput = open('myfile.txt','r')
     print("now reading from file")
     res_from_file = myInput.read()
