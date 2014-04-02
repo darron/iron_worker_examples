@@ -1,4 +1,4 @@
-Example which describes how to build project in Visual Studio and run it in Iron.io Worker
+Building a Visual Studio project to run on IronWorker
 -------------
 
 <p align="center">
