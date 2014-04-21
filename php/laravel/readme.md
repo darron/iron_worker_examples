@@ -27,6 +27,52 @@ The app will then check if the worker exists at Iron.io. If it doesn't, it will 
 
 You can change the letter template in `worker/app/views/mail/template.blade.php`
 
+### How to create new worker, upload it and run it
+
+1) Create worker in workers dir
+
+2) Upload worker using following command:
+
+`php artisan ironworker:upload --worker_name=IronWorkerName --exec_worker_file_name=WorkerName.php`
+
+`--worker_name` - the name of the worker in iron.io.
+
+`--exec_worker_file_name` - the name of the php file (worker) that might be executed.
+
+3) Create Push Queue for each worker in hud.iron.io Queues. Make type for the queue unicast in PUSH INFORMATION section and choose early uploaded worker name in Push Queues in SUBSCRIBERS section.
+
+4) Then you must push a message to Push Queue and a queue will call the worker with payload of message body.
+
+5) Example how to push message:
+
+`Queue::pushRaw(array('ids' => "1"), $queue_name));`
+
+Or you can use following command for push message from console:
+
+`php artisan ironworker:run --queue_name=IronMQName`
+
+`--queue_name` - the name of the Push Queue
+
+*If you run worker from console (push message to queue) the payload of message sets in RunWorker.php
+
+### If you want create new worker in your project
+
+1) Copy next commands from this project to yours:
+
+`app/commands/RunWorker.php`
+
+`app/commands/UploadWorker.php`
+
+2) Register commands in `app/start/artisan.php`:
+
+`Artisan::add(new UploadWorker);`
+
+`Artisan::add(new RunWorker);`
+
+3) Create `workers` directory in the root of your project.
+
+4) Follow the steps in the previous section (How to create new worker, upload it and run it ).
+
 -------------
 ## About Laravel
 

@@ -41,33 +41,16 @@ class UsersController extends \BaseController
     {
         $users_checked = Input::get('users');
         if (is_array($users_checked)) {
-            $name = Config::get('iron.worker_name', 'laravel-sendmail');
-            $token = Config::get('iron.token', 'xxx');
-            $project_id = Config::get('iron.project', 'xxx');
-            $uploaded = false;
-
-            $worker = new \IronWorker(array(
-                'token' => $token,
-                'project_id' => $project_id
-            ));
-
-            $codes = $worker->getCodes();
-            foreach ($codes as $code) {
-                if ($code->name == $name)
-                    $uploaded = true;
-            }
-
-            if (!$uploaded)
-                @$worker->upload(getcwd() . "/../worker", 'worker.php', $name);
-
+            $queue_name = $this->option('queue_name');
             $payload = array(
                 'ids' => $users_checked
-            );
 
-            $task_id = $worker->postTask($name, $payload);
+            );
+            $mgs_id = Queue::pushRaw($payload, $queue_name);
+
             $response = array(
                 'status' => 'success',
-                'msg' => "Task id = $task_id"
+                'msg' => "Task id = $mgs_id"
             );
         } else
             $response = array(
