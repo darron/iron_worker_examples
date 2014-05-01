@@ -1,6 +1,7 @@
 .idea
 
 /config.ini
+iron.json
 *.log
 /php/code/*.zip
 /IronCore.class.php
