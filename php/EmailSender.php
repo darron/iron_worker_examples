@@ -1,14 +1,11 @@
 <?php
-include("../IronCore.class.php");
-include("../IronWorker.class.php");
+require_once "phar://iron_worker.phar";
 
+$worker = new IronWorker();
 $name = "emailWorker.php";
 
-$iw = new IronWorker('config.ini');
-
 //uploading worker
-$iw->upload(dirname(__FILE__)."/workers/email_worker", 'emailWorker.php', $name);
-
+$worker->upload(dirname(__FILE__)."/workers/email_worker", 'emailWorker.php', $name);
 
 $payload = array(
     'host' => 'smtp.gmail.com',
@@ -22,6 +19,6 @@ $payload = array(
 );
 
 //queueing task
-$task_id = $iw->postTask($name, $payload);
+$task_id = $worker->postTask($name, $payload);
 
 
