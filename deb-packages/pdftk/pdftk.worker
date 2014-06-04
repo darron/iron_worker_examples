@@ -1,0 +1,8 @@
+
+runtime 'binary'
+exec 'run.sh'
+
+deb "http://mirrors.kernel.org/ubuntu/pool/main/g/gcj-4.6/libgcj12_4.6.3-1ubuntu2_amd64.deb"
+deb "http://mirrors.kernel.org/ubuntu/pool/universe/p/pdftk/pdftk_1.44-4build1_amd64.deb"
+
+remote

@@ -1,0 +1,2 @@
+# run pdftk
+pdftk --version
