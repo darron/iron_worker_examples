@@ -1,0 +1,9 @@
+runtime 'binary'
+
+exec 'run.sh'
+stack 'ruby-2.1'
+
+deb 'http://security.ubuntu.com/ubuntu/pool/main/libj/libjpeg6b/libjpeg62-dev_6b-15ubuntu1.1_amd64.deb'
+deb 'http://mirrors.kernel.org/ubuntu/pool/universe/j/jpegoptim/jpegoptim_1.3.0-1ubuntu1_amd64.deb'
+
+remote

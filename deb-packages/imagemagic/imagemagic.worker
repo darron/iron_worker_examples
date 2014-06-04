@@ -1,0 +1,7 @@
+runtime 'binary'
+exec 'imagemagic.sh'
+
+deb 'http://mirror.pnl.gov/ubuntu//pool/main/i/imagemagick/libmagickcore5_6.7.7.10-2ubuntu4_amd64.deb'
+deb 'http://mirror.pnl.gov/ubuntu//pool/main/i/imagemagick/libmagickwand5_6.7.7.10-2ubuntu4_amd64.deb'
+deb 'http://mirror.pnl.gov/ubuntu//pool/main/i/imagemagick/imagemagick_6.7.7.10-2ubuntu4_amd64.deb'
+remote
