@@ -1,0 +1,8 @@
+runtime "binary"
+
+exec "run.sh"
+
+deb 'http://launchpadlibrarian.net/85231451/libgraphicsmagick3_1.3.12-1.1build1_amd64.deb'
+deb 'http://launchpadlibrarian.net/85231450/graphicsmagick_1.3.12-1.1build1_amd64.deb'
+
+remote

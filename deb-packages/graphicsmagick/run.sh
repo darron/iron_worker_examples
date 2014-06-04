@@ -1,0 +1,3 @@
+
+# Test graphicsmagick
+gm -help
