@@ -1,0 +1,9 @@
+runtime 'binary'
+exec 'run.sh'
+
+# Test various stacks
+stack "node-0.10"
+
+remote
+deb "http://mirrors.kernel.org/ubuntu/pool/main/z/zip/zip_3.0-6ubuntu1_amd64.deb"
+set_env "PATH", "./__debs__/usr/bin:$PATH"
