@@ -3,4 +3,5 @@ require_once "phar://../iron_worker.phar";
 
 $worker = new IronWorker();
 
-$worker->upload("worker/", 'ffmpeg.php', "FFmpeg-Frames");
+$params = array('stack' => 'ffmpeg-2.3');
+$worker->upload("worker/", 'ffmpeg.php', "FFmpeg-Frames", $params);
