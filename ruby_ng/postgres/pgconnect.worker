@@ -1,7 +1,7 @@
 runtime "ruby"
 exec "pgconnect.rb"
 
-full_remote_build true
+remote # will cause build to happen on Iron.io platform
 
 gem 'iron_mq'
 gem 'pg'
