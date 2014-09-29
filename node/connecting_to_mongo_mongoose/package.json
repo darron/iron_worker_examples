@@ -1,0 +1,9 @@
+{
+  "name": "mean_worker",
+  "description": "A Mean Worker",
+  "version": "0.0.1",
+  "author": "Stephen <stephen@iron.io>",
+  "dependencies": {
+    "mongoose": "^3.8.8"
+  }
+}
