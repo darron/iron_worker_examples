@@ -1,0 +1,9 @@
+runtime "binary"
+
+exec "run.sh"
+
+stack 'node-0.10'
+
+deb 'http://archive.ubuntu.com/ubuntu/pool/main/g/ghostscript/ghostscript_9.10~dfsg-0ubuntu10.2_amd64.deb'
+
+remote
