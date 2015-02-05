@@ -3,7 +3,7 @@
 This example demonstrates starting a worker from a GitlabHQ webhook.
 
 1. Setup your Iron.io credentials
-2. Add Thyour Datadog API credentials to a file `datadog.yml`:
+2. Add your Datadog API credentials to a file `datadog.yml`:
 
     ```yaml
     datadog:
