@@ -18,7 +18,7 @@ end
 
 code_info = <<-eos
     Code push by: #{params['user_name']}
-    Repository: #{params['repository']['name']}  
+    Repository: #{params['repository']['name']}
 eos
 
 
@@ -29,6 +29,6 @@ dog.emit_event(
     Dogapi::Event.new(msg,
         :msg_title=>'Code Push',
         :alert_type=>'success',
-        :source_type_name=>'my apps',
-        :tags=>['gitlab']
+        :source_type_name=>'git',
+        :tags=>['gitlab', params['repository']['name']]
 ))
