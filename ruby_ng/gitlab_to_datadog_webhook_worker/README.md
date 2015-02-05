@@ -15,3 +15,5 @@ This example demonstrates starting a worker from a GitlabHQ webhook.
 6. Check your datadog events board.
 
 Give it a go!
+
+NOTE: If this isn't enough detail for you, [take a look at this blog article](http://blog.froese.org/2015/02/04/connecting-gitlab-to-datadog-using-iron.io/) - it may help.
